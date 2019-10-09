@@ -1,0 +1,11 @@
+
+syntax = "proto3";
+
+package wsgi;
+
+message Config {
+  string ip = 1;
+  uint32 port = 2;
+  bool isIPv6 = 3;
+}
+
