@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='wsgi',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nwsgi.proto\x12\x04wsgi\"2\n\x06\x43onfig\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0e\n\x06isIPv6\x18\x03 \x01(\x08\x62\x06proto3')
+  serialized_pb=_b('\n\nwsgi.proto\x12\x04wsgi\"l\n\x06\x43onfig\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0e\n\x06isIPv6\x18\x03 \x01(\x08\x12$\n\nidChecksum\x18\x04 \x01(\x0b\x32\x10.wsgi.IdChecksum\x12\x12\n\nnumWorkers\x18\x05 \x01(\r\" \n\nIdChecksum\x12\x12\n\nidChecksum\x18\x01 \x01(\x06\x62\x06proto3')
 )
 
 
@@ -54,6 +54,20 @@ _CONFIG = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='idChecksum', full_name='wsgi.Config.idChecksum', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='numWorkers', full_name='wsgi.Config.numWorkers', index=4,
+      number=5, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -67,10 +81,43 @@ _CONFIG = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=20,
-  serialized_end=70,
+  serialized_end=128,
 )
 
+
+_IDCHECKSUM = _descriptor.Descriptor(
+  name='IdChecksum',
+  full_name='wsgi.IdChecksum',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='idChecksum', full_name='wsgi.IdChecksum.idChecksum', index=0,
+      number=1, type=6, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=130,
+  serialized_end=162,
+)
+
+_CONFIG.fields_by_name['idChecksum'].message_type = _IDCHECKSUM
 DESCRIPTOR.message_types_by_name['Config'] = _CONFIG
+DESCRIPTOR.message_types_by_name['IdChecksum'] = _IDCHECKSUM
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Config = _reflection.GeneratedProtocolMessageType('Config', (_message.Message,), {
@@ -79,6 +126,13 @@ Config = _reflection.GeneratedProtocolMessageType('Config', (_message.Message,),
   # @@protoc_insertion_point(class_scope:wsgi.Config)
   })
 _sym_db.RegisterMessage(Config)
+
+IdChecksum = _reflection.GeneratedProtocolMessageType('IdChecksum', (_message.Message,), {
+  'DESCRIPTOR' : _IDCHECKSUM,
+  '__module__' : 'wsgi_pb2'
+  # @@protoc_insertion_point(class_scope:wsgi.IdChecksum)
+  })
+_sym_db.RegisterMessage(IdChecksum)
 
 
 # @@protoc_insertion_point(module_scope)

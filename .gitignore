@@ -1,5 +1,8 @@
 dist/*
 build/*
 *.egg-info
+__pycache__
 
 *.swp
+*.vim
+protoGen.ps1

@@ -1,5 +1,5 @@
 import os, sys, socket
-import wsgi_pb2
+import .wsgi_pb2
 #sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 #from example_app import app# as application
