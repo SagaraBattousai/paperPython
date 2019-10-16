@@ -1,4 +1,5 @@
-from .communication import bootUp
+from . import communication
 
-bootUp()
-
+handler = communication.bootUp()
+handler.run()
+# handler.handleRequests()

@@ -1,5 +1,5 @@
 import os, sys, socket
-import .wsgi_pb2
+#import .wsgi_pb2
 #sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 
 #from example_app import app# as application
@@ -25,7 +25,7 @@ def run_with_cgi(application):
     ############################
     environ['PATH_INFO'] = "/"
     environ['SERVER_NAME'] = "tmp"
-    environ['SERVER_PORT'] = "80"
+    environ['SERVER_PORT'] = "8080"
     environ['REQUEST_METHOD'] = "GET"
 
     if environ.get('HTTPS', 'off') in ('on', '1'):

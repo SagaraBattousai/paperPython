@@ -4,11 +4,12 @@ syntax = "proto3";
 package wsgi;
 
 message Config {
-  string     ip         = 1;
-  uint32     port       = 2;
-  bool       isIPv6     = 3;
-  IdChecksum idChecksum = 4;
-  uint32     numWorkers = 5;
+  string     ip          = 1;
+  uint32     port        = 2;
+  bool       isIPv6      = 3;
+  IdChecksum idChecksum  = 4;
+  uint32     numWorkers  = 5;
+/*string     application = 6; */
 }
 
 message IdChecksum {
