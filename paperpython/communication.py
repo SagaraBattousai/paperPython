@@ -1,13 +1,97 @@
-import os, sys, socket, selectors, concurrent.futures
+import os, sys, socket, selectors, multiprocessing # concurrent.futures
 from . import wsgi_pb2, wsgiImporter#, wsgi
+
+application = wsgiImporter.getWsgiApplication()
 
 def bootUp():
   socket_setting = wsgi_pb2.Config()
   socket_setting.ParseFromString(sys.stdin.buffer.read())
   return ServerSocket(socket_setting)
-  
+
+def run_with_cgi(soc, mask):
+
+  env = wsgi_pb2.Environ()
+  env.ParseFromString(soc.recv(4096))
+
+  environ = {}
+  environ['REQUEST_METHOD']  = env.request_method
+  environ['SCRIPT_NAME']     = env.script_name
+  environ['PATH_INFO']       = env.path_info
+  environ['QUERY_STRING']    = env.query_string
+  environ['CONTENT_TYPE']    = env.content_type
+  environ['CONTENT_LENGTH']  = env.content_length
+  environ['SERVER_NAME']     = env.server_name
+  environ['SERVER_PORT']     = env.server_port
+  environ['SERVER_PROTOCOL'] = env.server_protocol
+
+  #map<string, string> http_request_headers = 10;
+  #Wsgi wsgi = 11;
+  wsgi = env.wsgi
+  environ['wsgi.version']      = (wsgi.version.major, wsgi.version.minor)
+  environ['wsgi.url_scheme']   = wsgi.url_scheme
+  # TODO: fix
+  environ['wsgi.input']        = sys.stdin.buffer #need to fix
+  environ['wsgi.errors']       = sys.stderr # wsgi. blah
+  environ['wsgi.multithread']  = wsgi.multithreaded
+  environ['wsgi.multiprocess'] = wsgi.multiprocess
+  environ['wsgi.run_once']     = wsgi.run_once
+
+  headers_set = []
+  headers_sent = []
+
+  def write(data):
+    out = soc
+
+    response = wsgi_pb2.Response()
+
+    if not headers_set:
+      raise AssertionError("write() before start_response()")
+
+    elif not headers_sent:
+      # Before the first output, send the stored headers
+      status, response_headers = headers_sent[:] = headers_set
+      response.header.status = 'Status: {}'.format(status)
+      for header in response_headers:
+        response.header.response_headers[header[0]] = header[1]
+
+    response.body = data
+
+    out.send(response.SerializeToString())
+
+  def start_response(status, response_headers, exc_info=None):
+    if exc_info:
+      try:
+        if headers_sent:
+          # Re-raise original exception if headers sent
+          raise exc_info[1].with_traceback(exc_info[2])
+      finally:
+        exc_info = None     # avoid dangling circular ref
+    elif headers_set:
+      raise AssertionError("Headers already set!")
+
+    headers_set[:] = [status, response_headers]
+
+    # Note: error checking on the headers should happen here,
+    # *after* the headers are set.  That way, if an error
+    # occurs, start_response can only be re-called with
+    # exc_info set.
+
+    return write
+
+  result = application(environ, start_response)
+  try:
+    for data in result:
+      if data:    # don't send headers until body appears
+        write(data)
+    if not headers_sent:
+      write('')   # send headers now if body was empty
+  finally:
+    if hasattr(result, 'close'):
+      result.close()
+
+
 class SocketConnectionError(Exception):
-    pass
+  pass
 
 
 #Todo: Change name
@@ -21,12 +105,8 @@ class ServerSocket:
     self._setupSocket(socket_setting)
     self._handshake()
     self.soc.setblocking(False)
-    
+
     self._setupSelector()
-
-    self.pool = concurrent.futures.ProcessPoolExecutor(self.numWorkers)
-
-
 
     self.enc, self.esc = sys.getfilesystemencoding(), 'surrogateescape'
 
@@ -41,7 +121,7 @@ class ServerSocket:
 
     self.soc = socket.socket(self.af, socket.SOCK_STREAM)
     self.soc.connect((self.ip, self.port))
-    
+
   def _handshake(self):
     self.soc.send(self.idChecksum.SerializeToString())
     ack = self.soc.recv(1)
@@ -50,111 +130,34 @@ class ServerSocket:
 
   def _setupSelector(self):
     self.sel = selectors.DefaultSelector()
-    self.sel.register(self.soc, selectors.EVENT_READ, self.handle)
+    self.sel.register(self.soc, selectors.EVENT_READ, run_with_cgi)#self.handle)
 
   def run(self):
+
     events = self.sel.select()
-    for key, mask in events:
-      callback = key.data
-      callback(key.fileobj, mask)
+    while True:
+      events = self.sel.select()
+      for key, mask in events:
+        callback = key.data
+        callback(key.fileobj, mask)
 
   #Use pool once sure about when write is ready
-  def handle(self, sock, event):
-      if event == selectors.EVENT_READ:
-          self.handleRequests()
-      else:
-          self.serveRequests()
-
-  def handleRequests(self):
-      self.soc.recv(2)
-      self.run_with_cgi()
-
-  def serveRequests(self):
-      self.soc.send(b'wr')
+  # def handle(self, sock, event):
 
   def __del__(self):
-      self.pool.shutdown()
-  
+    pass
+    # self.pool.shutdown()
+    # self.pool.close()
 
   def unicode_to_wsgi(self, u):
-      # Convert an environment variable to a WSGI "bytes-as-unicode" string
+    # Convert an environment variable to a WSGI "bytes-as-unicode" string
       return u.encode(self.enc, self.esc).decode('iso-8859-1')
-  
+
   def wsgi_to_bytes(self, s):
-      return s.encode('iso-8859-1')
-  
-  def run_with_cgi(self):
-      environ = {k: self.unicode_to_wsgi(v) for k,v in os.environ.items()}
-      environ['wsgi.input']        = sys.stdin.buffer
-      environ['wsgi.errors']       = sys.stderr
-      environ['wsgi.version']      = (1, 0)
-      environ['wsgi.multithread']  = False
-      environ['wsgi.multiprocess'] = True
-      environ['wsgi.run_once']     = True
-  
-      ############################
-      environ['PATH_INFO'] = "/"
-      environ['SERVER_NAME'] = "tmp"
-      environ['SERVER_PORT'] = "8080"
-      environ['REQUEST_METHOD'] = "GET"
-  
-      if environ.get('HTTPS', 'off') in ('on', '1'):
-          environ['wsgi.url_scheme'] = 'https'
-      else:
-          environ['wsgi.url_scheme'] = 'http'
-  
-      headers_set = []
-      headers_sent = []
-  
-      def write(data):
-          out = sys.stdout.buffer
-  
-          if not headers_set:
-               raise AssertionError("write() before start_response()")
-  
-          elif not headers_sent:
-               # Before the first output, send the stored headers
-               status, response_headers = headers_sent[:] = headers_set
-               out.write(self.wsgi_to_bytes('Status: %s\r\n' % status))
-               for header in response_headers:
-                   out.write(self.wsgi_to_bytes('%s: %s\r\n' % header))
-               out.write(self.wsgi_to_bytes('\r\n'))
-  
-          out.write(data)
-          out.flush()
-  
-      def start_response(status, response_headers, exc_info=None):
-          if exc_info:
-              try:
-                  if headers_sent:
-                      # Re-raise original exception if headers sent
-                      raise exc_info[1].with_traceback(exc_info[2])
-              finally:
-                  exc_info = None     # avoid dangling circular ref
-          elif headers_set:
-              raise AssertionError("Headers already set!")
-  
-          headers_set[:] = [status, response_headers]
-  
-          # Note: error checking on the headers should happen here,
-          # *after* the headers are set.  That way, if an error
-          # occurs, start_response can only be re-called with
-          # exc_info set.
-  
-          return write
-  
-      result = self.application(environ, start_response)
-      try:
-          for data in result:
-              if data:    # don't send headers until body appears
-                  write(data)
-          if not headers_sent:
-              write('')   # send headers now if body was empty
-      finally:
-          if hasattr(result, 'close'):
-              result.close()
+    return s.encode('iso-8859-1')
+
 
 
 class RequestServer:
-    pass
+  pass
 

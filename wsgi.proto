@@ -9,10 +9,65 @@ message Config {
   bool       isIPv6      = 3;
   IdChecksum idChecksum  = 4;
   uint32     numWorkers  = 5;
-/*string     application = 6; */
 }
 
 message IdChecksum {
   fixed64 idChecksum = 1;
 }
+
+message Wsgi {
+  message Version {
+    uint32 major = 1;
+    uint32 minor = 2;
+  }
+  Version version = 1;
+  string url_scheme = 2;
+  string input_stream = 3;
+  string error_stream = 4;
+  bool multithreaded = 5;
+  bool multiprocess = 6;
+  bool run_once = 7;
+} 
+
+message Environ {
+  string request_method = 1;
+  string script_name = 2;
+  string path_info = 3;
+  string query_string = 4;
+  string content_type = 5;
+  string content_length = 6;
+  string server_name = 7;
+  string server_port = 8;
+  string server_protocol = 9;
+  map<string, string> http_request_headers = 10;
+  Wsgi wsgi = 11;
+  //map<string, string> server_headers = 12; //How do I split from request_h
+}
+
+message Header {
+  string status = 1;
+  map<string, string> response_headers = 2;
+}
+
+/* message Body { */
+/*   /1* repeated bytes body = 1; *1/ */
+/*   bytes body = 1; */
+/* } */
+
+message Response {
+  Header header = 1;
+  bytes body    = 2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='wsgi',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\nwsgi.proto\x12\x04wsgi\"l\n\x06\x43onfig\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0e\n\x06isIPv6\x18\x03 \x01(\x08\x12$\n\nidChecksum\x18\x04 \x01(\x0b\x32\x10.wsgi.IdChecksum\x12\x12\n\nnumWorkers\x18\x05 \x01(\r\" \n\nIdChecksum\x12\x12\n\nidChecksum\x18\x01 \x01(\x06\x62\x06proto3')
+  serialized_pb=_b('\n\nwsgi.proto\x12\x04wsgi\"l\n\x06\x43onfig\x12\n\n\x02ip\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\r\x12\x0e\n\x06isIPv6\x18\x03 \x01(\x08\x12$\n\nidChecksum\x18\x04 \x01(\x0b\x32\x10.wsgi.IdChecksum\x12\x12\n\nnumWorkers\x18\x05 \x01(\r\" \n\nIdChecksum\x12\x12\n\nidChecksum\x18\x01 \x01(\x06\"\xd3\x01\n\x04Wsgi\x12#\n\x07version\x18\x01 \x01(\x0b\x32\x12.wsgi.Wsgi.Version\x12\x12\n\nurl_scheme\x18\x02 \x01(\t\x12\x14\n\x0cinput_stream\x18\x03 \x01(\t\x12\x14\n\x0c\x65rror_stream\x18\x04 \x01(\t\x12\x15\n\rmultithreaded\x18\x05 \x01(\x08\x12\x14\n\x0cmultiprocess\x18\x06 \x01(\x08\x12\x10\n\x08run_once\x18\x07 \x01(\x08\x1a\'\n\x07Version\x12\r\n\x05major\x18\x01 \x01(\r\x12\r\n\x05minor\x18\x02 \x01(\r\"\xea\x02\n\x07\x45nviron\x12\x16\n\x0erequest_method\x18\x01 \x01(\t\x12\x13\n\x0bscript_name\x18\x02 \x01(\t\x12\x11\n\tpath_info\x18\x03 \x01(\t\x12\x14\n\x0cquery_string\x18\x04 \x01(\t\x12\x14\n\x0c\x63ontent_type\x18\x05 \x01(\t\x12\x16\n\x0e\x63ontent_length\x18\x06 \x01(\t\x12\x13\n\x0bserver_name\x18\x07 \x01(\t\x12\x13\n\x0bserver_port\x18\x08 \x01(\t\x12\x17\n\x0fserver_protocol\x18\t \x01(\t\x12\x43\n\x14http_request_headers\x18\n \x03(\x0b\x32%.wsgi.Environ.HttpRequestHeadersEntry\x12\x18\n\x04wsgi\x18\x0b \x01(\x0b\x32\n.wsgi.Wsgi\x1a\x39\n\x17HttpRequestHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x8d\x01\n\x06Header\x12\x0e\n\x06status\x18\x01 \x01(\t\x12;\n\x10response_headers\x18\x02 \x03(\x0b\x32!.wsgi.Header.ResponseHeadersEntry\x1a\x36\n\x14ResponseHeadersEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"6\n\x08Response\x12\x1c\n\x06header\x18\x01 \x01(\x0b\x32\x0c.wsgi.Header\x12\x0c\n\x04\x62ody\x18\x02 \x01(\x0c\x62\x06proto3')
 )
 
 
@@ -115,9 +115,382 @@ _IDCHECKSUM = _descriptor.Descriptor(
   serialized_end=162,
 )
 
+
+_WSGI_VERSION = _descriptor.Descriptor(
+  name='Version',
+  full_name='wsgi.Wsgi.Version',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='major', full_name='wsgi.Wsgi.Version.major', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='minor', full_name='wsgi.Wsgi.Version.minor', index=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=337,
+  serialized_end=376,
+)
+
+_WSGI = _descriptor.Descriptor(
+  name='Wsgi',
+  full_name='wsgi.Wsgi',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='version', full_name='wsgi.Wsgi.version', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='url_scheme', full_name='wsgi.Wsgi.url_scheme', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='input_stream', full_name='wsgi.Wsgi.input_stream', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='error_stream', full_name='wsgi.Wsgi.error_stream', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='multithreaded', full_name='wsgi.Wsgi.multithreaded', index=4,
+      number=5, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='multiprocess', full_name='wsgi.Wsgi.multiprocess', index=5,
+      number=6, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='run_once', full_name='wsgi.Wsgi.run_once', index=6,
+      number=7, type=8, cpp_type=7, label=1,
+      has_default_value=False, default_value=False,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_WSGI_VERSION, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=165,
+  serialized_end=376,
+)
+
+
+_ENVIRON_HTTPREQUESTHEADERSENTRY = _descriptor.Descriptor(
+  name='HttpRequestHeadersEntry',
+  full_name='wsgi.Environ.HttpRequestHeadersEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='wsgi.Environ.HttpRequestHeadersEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='wsgi.Environ.HttpRequestHeadersEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=_b('8\001'),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=684,
+  serialized_end=741,
+)
+
+_ENVIRON = _descriptor.Descriptor(
+  name='Environ',
+  full_name='wsgi.Environ',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='request_method', full_name='wsgi.Environ.request_method', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='script_name', full_name='wsgi.Environ.script_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='path_info', full_name='wsgi.Environ.path_info', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='query_string', full_name='wsgi.Environ.query_string', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='content_type', full_name='wsgi.Environ.content_type', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='content_length', full_name='wsgi.Environ.content_length', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='server_name', full_name='wsgi.Environ.server_name', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='server_port', full_name='wsgi.Environ.server_port', index=7,
+      number=8, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='server_protocol', full_name='wsgi.Environ.server_protocol', index=8,
+      number=9, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='http_request_headers', full_name='wsgi.Environ.http_request_headers', index=9,
+      number=10, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='wsgi', full_name='wsgi.Environ.wsgi', index=10,
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_ENVIRON_HTTPREQUESTHEADERSENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=379,
+  serialized_end=741,
+)
+
+
+_HEADER_RESPONSEHEADERSENTRY = _descriptor.Descriptor(
+  name='ResponseHeadersEntry',
+  full_name='wsgi.Header.ResponseHeadersEntry',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='key', full_name='wsgi.Header.ResponseHeadersEntry.key', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='wsgi.Header.ResponseHeadersEntry.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=_b('8\001'),
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=831,
+  serialized_end=885,
+)
+
+_HEADER = _descriptor.Descriptor(
+  name='Header',
+  full_name='wsgi.Header',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='status', full_name='wsgi.Header.status', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='response_headers', full_name='wsgi.Header.response_headers', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[_HEADER_RESPONSEHEADERSENTRY, ],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=744,
+  serialized_end=885,
+)
+
+
+_RESPONSE = _descriptor.Descriptor(
+  name='Response',
+  full_name='wsgi.Response',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='header', full_name='wsgi.Response.header', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='body', full_name='wsgi.Response.body', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=887,
+  serialized_end=941,
+)
+
 _CONFIG.fields_by_name['idChecksum'].message_type = _IDCHECKSUM
+_WSGI_VERSION.containing_type = _WSGI
+_WSGI.fields_by_name['version'].message_type = _WSGI_VERSION
+_ENVIRON_HTTPREQUESTHEADERSENTRY.containing_type = _ENVIRON
+_ENVIRON.fields_by_name['http_request_headers'].message_type = _ENVIRON_HTTPREQUESTHEADERSENTRY
+_ENVIRON.fields_by_name['wsgi'].message_type = _WSGI
+_HEADER_RESPONSEHEADERSENTRY.containing_type = _HEADER
+_HEADER.fields_by_name['response_headers'].message_type = _HEADER_RESPONSEHEADERSENTRY
+_RESPONSE.fields_by_name['header'].message_type = _HEADER
 DESCRIPTOR.message_types_by_name['Config'] = _CONFIG
 DESCRIPTOR.message_types_by_name['IdChecksum'] = _IDCHECKSUM
+DESCRIPTOR.message_types_by_name['Wsgi'] = _WSGI
+DESCRIPTOR.message_types_by_name['Environ'] = _ENVIRON
+DESCRIPTOR.message_types_by_name['Header'] = _HEADER
+DESCRIPTOR.message_types_by_name['Response'] = _RESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 Config = _reflection.GeneratedProtocolMessageType('Config', (_message.Message,), {
@@ -134,5 +507,59 @@ IdChecksum = _reflection.GeneratedProtocolMessageType('IdChecksum', (_message.Me
   })
 _sym_db.RegisterMessage(IdChecksum)
 
+Wsgi = _reflection.GeneratedProtocolMessageType('Wsgi', (_message.Message,), {
 
+  'Version' : _reflection.GeneratedProtocolMessageType('Version', (_message.Message,), {
+    'DESCRIPTOR' : _WSGI_VERSION,
+    '__module__' : 'wsgi_pb2'
+    # @@protoc_insertion_point(class_scope:wsgi.Wsgi.Version)
+    })
+  ,
+  'DESCRIPTOR' : _WSGI,
+  '__module__' : 'wsgi_pb2'
+  # @@protoc_insertion_point(class_scope:wsgi.Wsgi)
+  })
+_sym_db.RegisterMessage(Wsgi)
+_sym_db.RegisterMessage(Wsgi.Version)
+
+Environ = _reflection.GeneratedProtocolMessageType('Environ', (_message.Message,), {
+
+  'HttpRequestHeadersEntry' : _reflection.GeneratedProtocolMessageType('HttpRequestHeadersEntry', (_message.Message,), {
+    'DESCRIPTOR' : _ENVIRON_HTTPREQUESTHEADERSENTRY,
+    '__module__' : 'wsgi_pb2'
+    # @@protoc_insertion_point(class_scope:wsgi.Environ.HttpRequestHeadersEntry)
+    })
+  ,
+  'DESCRIPTOR' : _ENVIRON,
+  '__module__' : 'wsgi_pb2'
+  # @@protoc_insertion_point(class_scope:wsgi.Environ)
+  })
+_sym_db.RegisterMessage(Environ)
+_sym_db.RegisterMessage(Environ.HttpRequestHeadersEntry)
+
+Header = _reflection.GeneratedProtocolMessageType('Header', (_message.Message,), {
+
+  'ResponseHeadersEntry' : _reflection.GeneratedProtocolMessageType('ResponseHeadersEntry', (_message.Message,), {
+    'DESCRIPTOR' : _HEADER_RESPONSEHEADERSENTRY,
+    '__module__' : 'wsgi_pb2'
+    # @@protoc_insertion_point(class_scope:wsgi.Header.ResponseHeadersEntry)
+    })
+  ,
+  'DESCRIPTOR' : _HEADER,
+  '__module__' : 'wsgi_pb2'
+  # @@protoc_insertion_point(class_scope:wsgi.Header)
+  })
+_sym_db.RegisterMessage(Header)
+_sym_db.RegisterMessage(Header.ResponseHeadersEntry)
+
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), {
+  'DESCRIPTOR' : _RESPONSE,
+  '__module__' : 'wsgi_pb2'
+  # @@protoc_insertion_point(class_scope:wsgi.Response)
+  })
+_sym_db.RegisterMessage(Response)
+
+
+_ENVIRON_HTTPREQUESTHEADERSENTRY._options = None
+_HEADER_RESPONSEHEADERSENTRY._options = None
 # @@protoc_insertion_point(module_scope)
