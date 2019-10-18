@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="paperpython",
-    version="0.0.2",
+    version="0.0.3",
     author="SagaraBattousai",
     author_email="jamesafcalo@gmail.com",
     description="A WSGI compatible server aimed to be used with paperServer",
